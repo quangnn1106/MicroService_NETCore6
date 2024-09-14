@@ -18,7 +18,7 @@ namespace Product.API.Entities
         [Column(TypeName = "nvarchar(max)")]
         public string Summary { get; set; }
 
-        [Column(TypeName = "text")]
+        [Column(TypeName = "longtext")]
         public string Description { get; set; }
         [Column(TypeName = "decimal(12,2)")]
         public decimal Price { get; set; }

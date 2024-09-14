@@ -14,17 +14,21 @@ try
     builder.Host.AddAppConfigurations();
     // Add services to the container.
 
-    builder.Services.AddInfrastructure();
+    builder.Services.AddInfrastructure(builder.Configuration);
 
     var app = builder.Build();
     app.UseInfrastructure();
-
 
     app.Run();
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Unhandlerd exception");
+    string type = ex.GetType().Name;
+    if (type.Equals("StopTheHostException", StringComparison.Ordinal))
+    {
+        throw;
+    }   
+    Log.Fatal(ex, $"Unhandlerd exception: {ex.Message}");
 }
 finally
 {
