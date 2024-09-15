@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Product.API.Migrations
 {
-    public partial class Init_DB : Migration
+    public partial class Init_ProductDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,11 +19,12 @@ namespace Product.API.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    No = table.Column<string>(type: "varchar(250)", nullable: false)
+                    No = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Name = table.Column<string>(type: "nvarchar(250)", nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(300)", nullable: false),
+                    Summary = table.Column<string>(type: "text", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "text", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Price = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),

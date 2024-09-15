@@ -8,18 +8,18 @@ namespace Product.API.Entities
     {
 
         [Required]
-        [Column(TypeName ="varchar(250)")]
-        public string No { get; set; }
+        [Column(TypeName = "varchar(100)")]
+        public string? No { get; set; }
         [Required]
-        [Column(TypeName = "nvarchar(250)")]
-        public string Name { get; set; }
+        [Column(TypeName = "nvarchar(300)")]
+        public string? Name { get; set; }
 
- 
-        [Column(TypeName = "nvarchar(max)")]
-        public string Summary { get; set; }
 
-        [Column(TypeName = "longtext")]
-        public string Description { get; set; }
+        [Column(TypeName = "text")]
+        public string? Summary { get; set; }
+
+        [Column(TypeName = "text")]
+        public string? Description { get; set; }
         [Column(TypeName = "decimal(12,2)")]
         public decimal Price { get; set; }
 
