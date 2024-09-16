@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Product.API.Persistence;
+using Product.API.Repositories;
 
 namespace Product.API.Extensions
 {
@@ -39,6 +40,7 @@ namespace Product.API.Extensions
         {
             services.AddScoped(typeof(IRepositoryBaseAsync<,,>), typeof(RepositoryBaseAsync<,,>));
             services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+            services.AddScoped<IProductRepository, ProductRepository>();
             return services;
         }
     }

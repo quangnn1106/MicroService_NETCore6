@@ -24,8 +24,4 @@
     <ProjectReference Include="..\..\BuildingBlocks\Shared\Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\Interface\" />
-  </ItemGroup>
-
 </Project>

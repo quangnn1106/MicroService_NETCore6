@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Product.API.Entities;
 using Product.API.Persistence;
+using Product.API.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,9 +12,9 @@ namespace Product.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IRepositoryBaseAsync<CatalogProduct, long, ProductDbContext> _repository;
+        private readonly IProductRepository _repository;
 
-        public ProductsController(IRepositoryBaseAsync<CatalogProduct, long, ProductDbContext> repository)
+        public ProductsController(IProductRepository repository)
         {
             _repository = repository;
         }
@@ -21,7 +22,7 @@ namespace Product.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var result = 0;
+            var result =await _repository.GetProducts();
             return Ok(result);
         }
 
