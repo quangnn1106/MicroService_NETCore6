@@ -1,7 +1,9 @@
 
 using Common.Logging;
 using Product.API.Extensions;
+using Product.API.Persistence;
 using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
@@ -18,8 +20,10 @@ try
 
     var app = builder.Build();
     app.UseInfrastructure();
-
-    app.Run();
+    app.MigrateDatabase<ProductDbContext>((context, _) =>
+    {
+        ProductContextSeed.SeedProductAsync(context, Log.Logger).Wait();
+    }).Run();
 }
 catch (Exception ex)
 {
