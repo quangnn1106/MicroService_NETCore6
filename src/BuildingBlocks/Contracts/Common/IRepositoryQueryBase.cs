@@ -24,7 +24,7 @@ namespace Contracts.Common
     public interface IRepositoryBaseAsync<T, K, TContext> : IRepositoryQueryBase<T, K, TContext> where T : EntityBase<K> where TContext : DbContext
     {
         Task<K> CreateAsync(T entity);
-        Task<K> CreateListAsync(IEnumerable<T> entities);
+        Task<IList<K>> CreateListAsync(IEnumerable<T> entities);
 
         Task UpdateAsync(T entity);
 

@@ -39,58 +39,56 @@ namespace Infrastructures.Common
         public async Task<T?> GetByIdAsync(K id, params Expression<Func<T, object>>[] includeProperties) => 
             await FindAllByCondition(x => x.Id.Equals(id),trackChanges: false, includeProperties).FirstOrDefaultAsync();
 
-        public Task EndTransactionAsync()
+        public Task<IDbContextTransaction> BeginTransactionAsync() => _dbcontext.Database.BeginTransactionAsync();
+
+        public async Task EndTransactionAsync()
         {
-            throw new NotImplementedException();
+            await SaveChangesAsync();
+            await _dbcontext.Database.CommitTransactionAsync();
+        }
+
+        public Task RollBackTransactionAsync() => _dbcontext.Database.RollbackTransactionAsync();
+        
+
+        public async Task<K> CreateAsync(T entity)
+        {
+            await _dbcontext.Set<T>().AddAsync(entity);
+            return entity.Id;
         }
 
 
-        public Task RollBackTransactionAsync()
+        public async Task<IList<K>> CreateListAsync(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SaveChangesAsync()
-        {
-            throw new NotImplementedException();
+            await _dbcontext.Set<T>().AddRangeAsync(entities);
+            return entities.Select(x => x.Id).ToList();
         }
 
         public Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            if (_dbcontext.Entry(entity).State == EntityState.Unchanged) return Task.CompletedTask;
+            T? exist = _dbcontext.Set<T>().Find(entity.Id);
+            if (exist != null)
+            {
+                _dbcontext.Entry(exist).CurrentValues.SetValues(entity);
+            }
+            return Task.CompletedTask;
         }
 
-        public Task UpdateListAsync(IEnumerable<T> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public Task<K> CreateListAsync(IEnumerable<T> entities)
-        {
-            throw new NotImplementedException();
-        }
+        public Task UpdateListAsync(IEnumerable<T> entities) => _dbcontext.Set<T>().AddRangeAsync(entities);
 
         public Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dbcontext.Set<T>().Remove(entity);
+            return Task.CompletedTask;
         }
 
         public Task DeleteListAsync(IEnumerable<T> entities)
         {
-            throw new NotImplementedException();
+            _dbcontext.Set<T>().RemoveRange(entities);
+            return Task.CompletedTask;
         }
 
-   
-        public Task<IDbContextTransaction> BeginTransactionAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<K> CreateAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<int> SaveChangesAsync() => _unitOfWork.CommitAsync();
 
     }
 }
