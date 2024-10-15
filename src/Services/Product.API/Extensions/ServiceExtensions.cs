@@ -19,6 +19,7 @@ namespace Product.API.Extensions
             services.AddSwaggerGen();
             services.ConfigureProductDbContext(configuration);
             services.AddInfrastructureServices();
+            services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile())); // Config auto mapper
             return services;
         }
 
